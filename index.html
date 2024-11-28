@@ -27,6 +27,25 @@
       </div>
     <script type="module" src="/src/main.jsx"></script>
     <script src="./src/components/main.js"></script>
+    <script>
+      
+        document.addEventListener("DOMContentLoaded", () => {
+          const preloader = document.querySelector('.preloader');
+          const mainContent = document.querySelector('.main-content');
+
+          setTimeout(() => {
+            preloader.style.opacity = '0';
+            preloader.style.transition = 'opacity 1s ease-in-out';
+
+            setTimeout(() => {
+              preloader.style.display = 'none';
+              mainContent.style.display = 'block';
+              document.body.style.overflow = 'auto';
+            }, 1000);
+
+          }, 2000);
+        });
+    </script>
 
     
   </body>
