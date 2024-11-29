@@ -166,6 +166,7 @@ const DirectorForm = ({ formData, setFormData, handleNextStep }) => {
                 </form>
             )}
 
+            {showForm && (
             <div className="w-full max-w-4xl mt-8">
                 {formData.directors.map((director, index) => (
                     <div key={index} className="bg-gray-100 p-4 rounded-lg shadow-md mb-4 relative">
@@ -191,7 +192,6 @@ const DirectorForm = ({ formData, setFormData, handleNextStep }) => {
                         <p className="text-gray-700"><b>Country:</b> {director.country}</p>
                     </div>
                 ))}
-                {showForm && (
                     <div className="text-right">
                         <button
                             onClick={(e) => {
@@ -203,8 +203,8 @@ const DirectorForm = ({ formData, setFormData, handleNextStep }) => {
                             Process
                         </button>
                     </div>
-                )}
             </div>
+                )}
         </div>
     );
 };

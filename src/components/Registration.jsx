@@ -576,7 +576,7 @@ const Registration = () => {
 
                     {/* Step 7: Confirm */}
                     {currentStep === 7 && (
-                        <div className="px-5 py-10 rounded-xl w-full" >
+                        <div className="lg:px-5 py-10 rounded-xl w-full" >
                             <h2 className="text-xl font-semibold text-gray-800">Confirm Your Information</h2>
 
                             {/* Display the form data */}
