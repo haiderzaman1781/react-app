@@ -51,7 +51,12 @@ const Registration = () => {
             allocatedShares: "0",
             selectedDirector: "",
         },
-        extra: {}, // Add fields as necessary
+        extra: {
+            activity: "",
+            customerType: "",
+            constitution: "",
+            ultimateHolding: "",
+        }, // Add fields as necessary
         tax: {
             contactPerson: "",
             contactPhone: "",
@@ -386,7 +391,7 @@ const Registration = () => {
                                             <input
                                                 type="number"
                                                 name="allocatedShares"
-                                                value={formData.shares.allocatedShares}
+                                                value={formData.shares.allocatedShares || ""}
                                                 onChange={(e) => setFormData((prev) => ({ ...prev, shares: { ...prev.shares, allocatedShares: e.target.value } }))}
                                                 className="bg-transparent ring-2 ring-[#008080] focus:ring-[#008080] w-full px-4 py-2 shadow-2xl rounded-md"
                                                 min="1"
@@ -454,122 +459,154 @@ const Registration = () => {
 
                     {/* Step 5: Extra */}
                     {currentStep === 5 && (
-                        <form className="space-y-6 shadow-2xl px-5 py-10 rounded-xl" onSubmit={(e) => { e.preventDefault(); handleNextStep(); }}>
-                            <h2 className="text-xl font-semibold text-gray-800">Extra Information</h2>
+                            <form
+                                className="space-y-6 shadow-2xl px-5 py-10 rounded-xl"
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    handleNextStep();
+                                }}
+                            >
+                                <h2 className="text-xl font-semibold text-gray-800">Extra Information</h2>
 
-                            {/* Activity Section */}
-                            <div className="mb-6  shadow-2xl p-4">
-                                <label className="block text-lg font-medium text-gray-700">
-                                    What is the purpose of this new company?
-                                </label>
-                                <p className="text-gray-500 mb-2">Clearly specify the type(s) of activity this new company will be carrying out:</p>
-                                <input
-                                    required
-                                    type="text"
-                                    value={activity}
-                                    onChange={(e) => setActivity(e.target.value)}
-                                    placeholder="Enter company activity"
-                                    className="w-full p-2 bg-transparent rounded-md shadow-sm ring-[#008080] focus:outline-none ring-2 focus:ring-[#008080]"
-                                />
-                            </div>
-
-                            {/* Customer Section */}
-                            <div className="mb-6 shadow-2xl p-4">
-                                <label className="block text-lg font-medium text-gray-700">
-                                    Who is the customer?
-                                </label>
-                                <p className="text-gray-500 mb-2">Specify who the customer is (the person completing this application).</p>
-                                <div className="flex items-center mb-2">
+                                {/* Activity Section */}
+                                <div className="mb-6 shadow-2xl p-4">
+                                    <label className="block text-lg font-medium text-gray-700">
+                                        What is the purpose of this new company?
+                                    </label>
+                                    <p className="text-gray-500 mb-2">
+                                        Clearly specify the type(s) of activity this new company will be carrying out:
+                                    </p>
                                     <input
                                         required
-                                        type="radio"
-                                        name="customerType"
-                                        value="commercial"
-                                        onChange={(e) => setCustomerType(e.target.value)}
-                                        className="mr-2"
+                                        type="text"
+                                        value={formData.activity}
+                                        onChange={(e) =>
+                                            setFormData((prev) => ({ ...prev, activity: e.target.value }))
+                                        }
+                                        placeholder="Enter company activity"
+                                        className="w-full p-2 bg-transparent rounded-md shadow-sm ring-[#008080] focus:outline-none ring-2 focus:ring-[#008080]"
                                     />
-                                    <span className="text-gray-700">Someone else</span>
                                 </div>
-                                <div className="flex items-center mb-2">
-                                    <input
-                                        type="radio"
-                                        name="customerType"
-                                        value="individual"
-                                        onChange={(e) => setCustomerType(e.target.value)}
-                                        className="mr-2"
-                                    />
-                                    <span className="text-gray-700">Myself</span>
-                                </div>
-                            </div>
 
-                            {/* Constitution Section */}
-                            <div className="mb-6 shadow-2xl p-4">
-                                <label className="block text-lg font-medium text-gray-700">
-                                    Would you like to adopt a constitution?
-                                </label>
-                                <div className="flex items-center mb-2">
-                                    <input
-                                        type="radio"
-                                        name="constitution"
-                                        value="yes"
-                                        onChange={(e) => setConstitution(e.target.value)}
-                                        className="mr-2"
-                                    />
-                                    <span className="text-gray-700">Yes</span>
+                                {/* Customer Section */}
+                                <div className="mb-6 shadow-2xl p-4">
+                                    <label className="block text-lg font-medium text-gray-700">
+                                        Who is the customer?
+                                    </label>
+                                    <p className="text-gray-500 mb-2">
+                                        Specify who the customer is (the person completing this application).
+                                    </p>
+                                    <div className="flex items-center mb-2">
+                                        <input
+                                            required
+                                            type="radio"
+                                            name="customerType"
+                                            value="commercial"
+                                            checked={formData.customerType === "commercial"}
+                                            onChange={(e) =>
+                                                setFormData((prev) => ({ ...prev, customerType: e.target.value }))
+                                            }
+                                            className="mr-2"
+                                        />
+                                        <span className="text-gray-700">Someone else</span>
+                                    </div>
+                                    <div className="flex items-center mb-2">
+                                        <input
+                                            type="radio"
+                                            name="customerType"
+                                            value="individual"
+                                            checked={formData.customerType === "individual"}
+                                            onChange={(e) =>
+                                                setFormData((prev) => ({ ...prev, customerType: e.target.value }))
+                                            }
+                                            className="mr-2"
+                                        />
+                                        <span className="text-gray-700">Myself</span>
+                                    </div>
                                 </div>
-                                <div className="flex items-center">
-                                    <input
-                                        type="radio"
-                                        name="constitution"
-                                        value="no"
-                                        onChange={(e) => setConstitution(e.target.value)}
-                                        className="mr-2"
-                                    />
-                                    <span className="text-gray-700">No</span>
-                                </div>
-                            </div>
 
-                            {/* Ultimate Holding Section */}
-                            <div className="mb-6 shadow-2xl p-4">
-                                <label className="block text-lg font-medium text-gray-700">
-                                    Does this company have an ultimate holding company?
-                                </label>
-                                <div className="flex items-center mb-2">
-                                    <input
-                                        type="radio"
-                                        name="ultimateHolding"
-                                        value="yes"
-                                        onChange={(e) => setUltimateHolding(e.target.value)}
-                                        className="mr-2"
-                                    />
-                                    <span className="text-gray-700">Yes</span>
+                                {/* Constitution Section */}
+                                <div className="mb-6 shadow-2xl p-4">
+                                    <label className="block text-lg font-medium text-gray-700">
+                                        Would you like to adopt a constitution?
+                                    </label>
+                                    <div className="flex items-center mb-2">
+                                        <input
+                                            type="radio"
+                                            name="constitution"
+                                            value="yes"
+                                            checked={formData.constitution === "yes"}
+                                            onChange={(e) =>
+                                                setFormData((prev) => ({ ...prev, constitution: e.target.value }))
+                                            }
+                                            className="mr-2"
+                                        />
+                                        <span className="text-gray-700">Yes</span>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <input
+                                            type="radio"
+                                            name="constitution"
+                                            value="no"
+                                            checked={formData.constitution === "no"}
+                                            onChange={(e) =>
+                                                setFormData((prev) => ({ ...prev, constitution: e.target.value }))
+                                            }
+                                            className="mr-2"
+                                        />
+                                        <span className="text-gray-700">No</span>
+                                    </div>
                                 </div>
-                                <div className="flex items-center">
-                                    <input
-                                        type="radio"
-                                        name="ultimateHolding"
-                                        value="no"
-                                        onChange={(e) => setUltimateHolding(e.target.value)}
-                                        className="mr-2"
-                                    />
-                                    < span className="text-gray-700">No</span>
-                                </div>
-                            </div>
 
-                            <div className="text-right">
-                                <button
-                                    type="submit"
-                                    className="px-6 py-2 ring-2 ring-white hover:ring-transparent  text-white hover:text-black rounded-lg hover:bg-[#4cf0e5]"
-                                >
-                                    Process
-                                </button>
-                            </div>
-                        </form>
+                                {/* Ultimate Holding Section */}
+                                <div className="mb-6 shadow-2xl p-4">
+                                    <label className="block text-lg font-medium text-gray-700">
+                                        Does this company have an ultimate holding company?
+                                    </label>
+                                    <div className="flex items-center mb-2">
+                                        <input
+                                            type="radio"
+                                            name="ultimateHolding"
+                                            value="yes"
+                                            checked={formData.ultimateHolding === "yes"}
+                                            onChange={(e) =>
+                                                setFormData((prev) => ({ ...prev, ultimateHolding: e.target.value }))
+                                            }
+                                            className="mr-2"
+                                        />
+                                        <span className="text-gray-700">Yes</span>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <input
+                                            type="radio"
+                                            name="ultimateHolding"
+                                            value="no"
+                                            checked={formData.ultimateHolding === "no"}
+                                            onChange={(e) =>
+                                                setFormData((prev) => ({ ...prev, ultimateHolding: e.target.value }))
+                                            }
+                                            className="mr-2"
+                                        />
+                                        <span className="text-gray-700">No</span>
+                                    </div>
+                                </div>
+
+                                <div className="text-right">
+                                    <button
+                                        type="submit"
+                                        className="px-6 py-2 ring-2 ring-white hover:ring-transparent text-white hover:text-black rounded-lg hover:bg-[#4cf0e5]"
+                                    >
+                                        Process
+                                    </button>
+                                </div>
+                            </form>
                     )}
 
                     {/* Step 6: Tax */}
                     {currentStep === 6 && (
                         <TaxForm
+                            formData={formData}
+                            setFormData={setFormData}
                             handleNextStep={handleNextStep}
                         />
                     )}
